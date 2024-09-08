@@ -103,25 +103,22 @@ void addStudent(struct Student **head, int rollNumber, const char *name, float c
     printf("Student added successfully.\n");
 }
 
-void findStudentByRollNumber(struct Student *head, int rollNumber) {
-    while (head != NULL) {
-        if (head->rollNumber == rollNumber) {
-            printf("\nStudent found:\n");
-            printf("Roll Number: %d, Name: %s, CGPA: %.2f, Gender: %c\n", head->rollNumber, head->name, head->cgpa, head->gender);
-            return;
-        }
-        head = head->next;
+void findStudentByRollNumber(int rollNumber) {
+    // Look up the roll number in the unordered_map
+    auto it = students.find(rollNumber);
+    if (it != students.end()) {
+        // Student found
+        const Student& student = it->second;
+        printf("\nStudent found:\n");
+        printf("Roll Number: %d, Name: %s, CGPA: %.2f, Gender: %c\n", student.rollNumber, student.name.c_str(), student.cgpa, student.gender);
+    } else {
+        // Student not found
+        printf("Student with roll number %d not found.\n", rollNumber);
     }
-    printf("Student with roll number %d not found.\n", rollNumber);
 }
 
-int countStudents(struct Student *head) {
-    int count = 0;
-    while (head != NULL) {
-        count++;
-        head = head->next;
-    }
-    return count;
+int countStudents() {
+    return students.size();
 }
 
 void deleteStudent(struct Student **head, int rollNumber) {
@@ -181,7 +178,7 @@ void updateStudent(struct Student **head, int rollNumber) {
             switch (choice) {
                 case 1:
                     printf("Enter new name: ");
-                    cin.ignore();  // Ignore any leftover newline character from previous input
+                    cin.ignore();  
                     cin.getline(current->name, sizeof(current->name));
                     break;
                 case 2:
@@ -299,7 +296,7 @@ void menu() {
 
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input. Please enter a number.\n");
-            while (getchar() != '\n'); // Clear input buffer
+            while (getchar() != '\n'); 
             continue;
         }
 
@@ -310,21 +307,21 @@ void menu() {
                     printf("Roll Number: ");
                     if (scanf("%d", &rollNumber) != 1 || rollNumber <= 0) {
                         printf("Invalid input. Roll number must be a positive integer.\n");
-                        while (getchar() != '\n'); // Clear input buffer
+                        while (getchar() != '\n'); 
                     } else {
                         break;
                     }
                 } while (1);
 
                 printf("Name: ");
-                while (getchar() != '\n'); // clear newline character left in buffer
+                while (getchar() != '\n'); 
                 cin.getline(name, sizeof(name));
 
                 do {
                     printf("CGPA: ");
                     if (scanf("%f", &cgpa) != 1 || cgpa < 0 || cgpa > 4) {
                         printf("Invalid input. CGPA should be between 0 and 4.\n");
-                        while (getchar() != '\n'); // Clear input buffer
+                        while (getchar() != '\n'); 
                     } else {
                         break;
                     }
@@ -432,8 +429,8 @@ int main() {
             cout << "Enter password: ";
             string password;
             char ch;
-            while ((ch = _getch()) != '\r') { // '\r' is carriage return (Enter key)
-                if (ch == '\b') { // Handle backspace
+            while ((ch = _getch()) != '\r') { 
+                if (ch == '\b') { 
                     if (!password.empty()) {
                         cout << "\b \b";
                         password.pop_back();
@@ -447,8 +444,8 @@ int main() {
 
             if (a[username] == password) {
                 cout << "Login successful\n";
-                menu(); // Call menu function after successful login
-                break;  // Exit the loop after menu completes
+                menu(); 
+                break;  
             } else {
                 cout << "Invalid password\n";
                 attempt_count++;
@@ -467,8 +464,8 @@ int main() {
                 cout << "Enter new password: ";
                 string password;
                 char ch;
-                while ((ch = _getch()) != '\r') { // '\r' is carriage return (Enter key)
-                    if (ch == '\b') { // Handle backspace
+                while ((ch = _getch()) != '\r') { 
+                    if (ch == '\b') { 
                         if (!password.empty()) {
                             cout << "\b \b";
                             password.pop_back();
