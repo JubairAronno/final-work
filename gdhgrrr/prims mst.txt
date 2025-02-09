@@ -1,0 +1,81 @@
+Prim's MST Code:
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cout << "Enter no. of vertices: ";
+    cin >> n;
+
+    int graph[n][n];
+
+    for (int i=0; i<n; i++) {
+        for (int j=0; j<n; j++) {
+            graph[i][j] = 0;
+        }
+    }
+
+    int e;
+    cout << "Enter no. of edges: ";
+    cin >> e;
+
+    while (e--) {
+        int u, v, w;
+        cout << "Enter source: ";
+        cin >> u;
+        cout << "Enter destination: ";
+        cin >> v;
+        cout << "Enter weight: ";
+        cin >> w;
+        graph[u][v] = w;
+        graph[v][u] = w;
+    }
+
+    for (int i=0; i<n; i++) {
+        for (int j=0; j<n; j++) {
+            cout << graph[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    // prim's algo start
+    int total_cost = 0;
+    int no_of_edges = 0;
+    int selected[n];
+    memset(selected, false, sizeof selected);
+    selected[0] = true;
+
+    int x, y; // row no., column  no.
+    cout << "Edge\tWeight\n-------------------" << endl;
+    while (no_of_edges < n-1) {
+        int minn = INT_MAX;
+        x = 0;
+        y = 0;
+        for (int i=0; i<n; i++) { // for every source
+            if (selected[i]) { // if it is visited
+                for (int j=0; j<n; j++) { // for every destination
+                    if (!selected[j] and graph[i][j]) { // if destination
+                        // not visited and there exists an edge
+                        if (graph[i][j] < minn) { // if edge weight is
+                            // less than current minimum
+                            minn = graph[i][j]; // update current minimum
+                            x = i; // keep row
+                            y = j; // keep column
+                        }
+                    }
+                }
+            }
+        }
+        cout << x << "->" << y << "\t" << graph[x][y] << endl;
+        total_cost+=graph[x][y];
+        selected[y] = true;
+        no_of_edges++;
+    }
+
+    cout << "-----------------------\ntotal = " << total_cost << endl;
+
+    // prim's algo finish
+
+    return 0;
+}
